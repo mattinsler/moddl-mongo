@@ -12,7 +12,9 @@ $_ = -> console.log arguments
 # .then($_).catch($_)
 
 
-User.where(_id: 'test').update($set: {email: 'matt.insler@foo.com'})
-.then($_).catch($_)
+User.where(email: 'test@test.com').remove().then($_, $_)
 
-User.array($_)
+# User.where(_id: 'test').update($set: {email: 'matt.insler@foo.com'})
+# .then($_).catch($_)
+
+# User.array($_)

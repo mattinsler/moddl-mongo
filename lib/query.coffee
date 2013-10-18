@@ -55,7 +55,8 @@ class Model.Mongo.Query
     
     @model.__collection__.then (c) =>
       q.ninvoke(c, 'save', save_obj, opts)
-    .then(Model.wrapper(@model))
+    .then =>
+      Model.wrapper(@model)(save_obj)
   
   update: Model.defer (update, opts) ->
     if typeof opts is 'function'

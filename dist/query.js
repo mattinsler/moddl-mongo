@@ -91,7 +91,9 @@
       }
       return this.model.__collection__.then(function(c) {
         return q.ninvoke(c, 'save', save_obj, opts);
-      }).then(Model.wrapper(this.model));
+      }).then(function() {
+        return Model.wrapper(_this.model)(save_obj);
+      });
     });
 
     Query.prototype.update = Model.defer(function(update, opts) {
