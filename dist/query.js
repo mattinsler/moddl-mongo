@@ -1,5 +1,7 @@
 (function() {
-  var Model;
+  var Model, q;
+
+  q = require('q');
 
   Model = require('moddl').Model;
 
@@ -42,40 +44,35 @@
       return this;
     };
 
-    Query.prototype.first = Model.defer(function(callback) {
+    Query.prototype.first = Model.defer(function() {
       var _this = this;
-      this.model.__collection__.then(function(c) {
-        return c.find(_this.query, _this.opts).nextObject(Model.wrap_callback(_this.model, callback));
-      })["catch"](callback);
-      return null;
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c.find(_this.query, _this.opts), 'nextObject');
+      }).then(Model.wrapper(this.model));
     });
 
-    Query.prototype.array = Model.defer(function(callback) {
+    Query.prototype.array = Model.defer(function() {
       var _this = this;
-      this.model.__collection__.then(function(c) {
-        return c.find(_this.query, _this.opts).toArray(Model.wrap_callback(_this.model, callback));
-      })["catch"](callback);
-      return null;
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c.find(_this.query, _this.opts), 'toArray');
+      }).then(Model.wrapper(this.model));
     });
 
-    Query.prototype.count = Model.defer(function(callback) {
+    Query.prototype.count = Model.defer(function() {
       var _this = this;
-      this.model.__collection__.then(function(c) {
-        return c.count(_this.query, callback);
-      })["catch"](callback);
-      return null;
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c, 'count');
+      });
     });
 
-    Query.prototype.save = Model.defer(function(obj, opts, callback) {
+    Query.prototype.save = Model.defer(function(obj, opts) {
       var k, save_obj, v, _ref,
         _this = this;
       if (typeof obj === 'function') {
-        callback = obj;
         opts = {};
         obj = {};
       }
       if (typeof opts === 'function') {
-        callback = opts;
         opts = {};
       }
       save_obj = {};
@@ -92,34 +89,31 @@
           save_obj[k] = v;
         }
       }
-      this.model.__collection__.then(function(c) {
-        return c.save(save_obj, opts, Model.wrap_callback(_this.model, callback));
-      })["catch"](callback);
-      return null;
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c, 'save', save_obj, opts);
+      }).then(Model.wrapper(this.model));
     });
 
-    Query.prototype.update = Model.defer(function(update, opts, callback) {
+    Query.prototype.update = Model.defer(function(update, opts) {
       var _this = this;
+      if (typeof opts === 'function') {
+        opts = {};
+      }
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c, 'update', _this.query, update, opts);
+      }).then(Model.wrapper(this.model));
+    });
+
+    Query.prototype.remove = Model.defer(function(opts) {
+      var callback,
+        _this = this;
       if (typeof opts === 'function') {
         callback = opts;
         opts = {};
       }
-      this.model.__collection__.then(function(c) {
-        return c.update(_this.query, update, opts, callback);
-      })["catch"](callback);
-      return null;
-    });
-
-    Query.prototype.remove = Model.defer(function(opts, callback) {
-      var _this = this;
-      if (typeof opts === 'function') {
-        callback = opts;
-        opts = {};
-      }
-      this.model.__collection__.then(function(c) {
-        return c.remove(_this.query, opts, callback);
-      })["catch"](callback);
-      return null;
+      return this.model.__collection__.then(function(c) {
+        return q.ninvoke(c, 'remove', _this.query, opts);
+      });
     });
 
     return Query;
