@@ -1,8 +1,10 @@
 (function() {
-  var Model,
+  var Model, q,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
+
+  q = require('q');
 
   Model = require('moddl').Model;
 
@@ -101,6 +103,16 @@
     Mongo.remove = function(query, opts, callback) {
       return this.where(query).remove(opts, callback);
     };
+
+    Mongo.find_and_modify = Model.defer(function(query, sort, update, opts) {
+      var _this = this;
+      if (typeof opts === 'function') {
+        opts = {};
+      }
+      return this.__collection__.then(function(c) {
+        return q.ninvoke(c, 'findAndModify', query, sort, update, opts);
+      }).then(Model.wrapper(this));
+    });
 
     return Mongo;
 

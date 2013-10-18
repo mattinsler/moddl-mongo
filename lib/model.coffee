@@ -1,3 +1,4 @@
+q = require 'q'
 {Model} = require 'moddl'
 
 class Model.Mongo extends Model
@@ -41,9 +42,11 @@ class Model.Mongo extends Model
   @update: (query, update, opts, callback) -> @where(query).update(update, opts, callback)
   @remove: (query, opts, callback) -> @where(query).remove(opts, callback)
 
-  # @find_and_modify: Model.defer (query, sort, update, opts, callback) ->
-  #   if typeof opts is 'function'
-  #     callback = opts
-  #     opts = {}
-  # 
-  #   @__collection__.findAndModify(query, sort, update, opts, callback)
+  @find_and_modify: Model.defer (query, sort, update, opts) ->
+    if typeof opts is 'function'
+      # callback = opts
+      opts = {}
+    
+    @__collection__.then (c) =>
+      q.ninvoke(c, 'findAndModify', query, sort, update, opts)
+    .then(Model.wrapper(@))
