@@ -41,17 +41,12 @@ class Model.Mongo.Query
       q.ninvoke(c.find(@query, @opts), 'count')
 
   save: Model.defer (obj, opts) ->
-    if typeof obj is 'function'
-      # callback = obj
-      opts = {}
-      obj = {}
-    if typeof opts is 'function'
-      # callback = opts
-      opts = {}
-
+    throw new Error('Cannot save null object') unless obj?
+    opts ?= {}
+    
     save_obj = {}
-    save_obj[k] = v for k, v of obj when not Object.getOwnPropertyDescriptor(obj, k).get?
-    save_obj[k] = v for k, v of @query when not Object.getOwnPropertyDescriptor(@query, k).get?
+    save_obj[k] = v for k, v of obj when Object.getOwnPropertyDescriptor(obj, k)?.value?
+    save_obj[k] = v for k, v of @query when Object.getOwnPropertyDescriptor(@query, k)?.value?
     
     @model.__collection__.then (c) =>
       q.ninvoke(c, 'save', save_obj, opts)
@@ -59,18 +54,14 @@ class Model.Mongo.Query
       Model.wrapper(@model)(save_obj)
   
   update: Model.defer (update, opts) ->
-    if typeof opts is 'function'
-      # callback = opts
-      opts = {}
+    opts ?= {}
 
     @model.__collection__.then (c) =>
       q.ninvoke(c, 'update', @query, update, opts)
     .then(Model.wrapper(@model))
 
   remove: Model.defer (opts) ->
-    if typeof opts is 'function'
-      callback = opts
-      opts = {}
-
+    opts ?= {}
+    
     @model.__collection__.then (c) =>
       q.ninvoke(c, 'remove', @query, opts)

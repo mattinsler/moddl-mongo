@@ -66,26 +66,25 @@
     });
 
     Query.prototype.save = Model.defer(function(obj, opts) {
-      var k, save_obj, v, _ref,
+      var k, save_obj, v, _ref, _ref1, _ref2,
         _this = this;
-      if (typeof obj === 'function') {
-        opts = {};
-        obj = {};
+      if (obj == null) {
+        throw new Error('Cannot save null object');
       }
-      if (typeof opts === 'function') {
+      if (opts == null) {
         opts = {};
       }
       save_obj = {};
       for (k in obj) {
         v = obj[k];
-        if (Object.getOwnPropertyDescriptor(obj, k).get == null) {
+        if (((_ref = Object.getOwnPropertyDescriptor(obj, k)) != null ? _ref.value : void 0) != null) {
           save_obj[k] = v;
         }
       }
-      _ref = this.query;
-      for (k in _ref) {
-        v = _ref[k];
-        if (Object.getOwnPropertyDescriptor(this.query, k).get == null) {
+      _ref1 = this.query;
+      for (k in _ref1) {
+        v = _ref1[k];
+        if (((_ref2 = Object.getOwnPropertyDescriptor(this.query, k)) != null ? _ref2.value : void 0) != null) {
           save_obj[k] = v;
         }
       }
@@ -98,7 +97,7 @@
 
     Query.prototype.update = Model.defer(function(update, opts) {
       var _this = this;
-      if (typeof opts === 'function') {
+      if (opts == null) {
         opts = {};
       }
       return this.model.__collection__.then(function(c) {
@@ -107,10 +106,8 @@
     });
 
     Query.prototype.remove = Model.defer(function(opts) {
-      var callback,
-        _this = this;
-      if (typeof opts === 'function') {
-        callback = opts;
+      var _this = this;
+      if (opts == null) {
         opts = {};
       }
       return this.model.__collection__.then(function(c) {
