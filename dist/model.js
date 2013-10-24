@@ -4,7 +4,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
-  q = require('q');
+  q = require('moddl/node_modules/q');
 
   Model = require('moddl').Model;
 
@@ -106,7 +106,7 @@
 
     Mongo.find_and_modify = Model.defer(function(query, sort, update, opts) {
       var _this = this;
-      if (typeof opts === 'function') {
+      if (opts == null) {
         opts = {};
       }
       return this.__collection__.then(function(c) {

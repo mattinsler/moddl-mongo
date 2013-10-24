@@ -1,7 +1,7 @@
 (function() {
   var Model, q;
 
-  q = require('q');
+  q = require('moddl/node_modules/q');
 
   Model = require('moddl').Model;
 

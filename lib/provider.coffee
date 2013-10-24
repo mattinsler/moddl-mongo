@@ -1,4 +1,4 @@
-q = require 'q'
+q = require 'moddl/node_modules/q'
 mongodb = require 'mongodb'
 {MongoClient} = mongodb
 {EventEmitter} = require 'events'

@@ -1,4 +1,4 @@
-q = require 'q'
+q = require 'moddl/node_modules/q'
 {Model} = require 'moddl'
 
 class Model.Mongo.Query

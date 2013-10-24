@@ -1,7 +1,7 @@
 (function() {
   var EventEmitter, MongoClient, Provider, mongodb, q;
 
-  q = require('q');
+  q = require('moddl/node_modules/q');
 
   mongodb = require('mongodb');
 
