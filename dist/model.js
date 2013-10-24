@@ -46,7 +46,7 @@
       Mongodb.connect = function(url) {
         return Model.Mongodb.provider.connect({
           name: 'DEFAULT',
-          url: url
+          url: moddl.betturl.format(url)
         });
       };
 

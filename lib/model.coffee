@@ -25,7 +25,7 @@ module.exports = (moddl) ->
 	    instance[k] = v for k, v of data
   
 	  @connect: (url) ->
-	    Model.Mongodb.provider.connect(name: 'DEFAULT', url: url)
+      Model.Mongodb.provider.connect(name: 'DEFAULT', url: moddl.betturl.format(url))
   
 	  @where: -> new @Query(@).where(arguments...)
 
