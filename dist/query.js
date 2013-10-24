@@ -61,7 +61,7 @@
     Query.prototype.count = Model.defer(function() {
       var _this = this;
       return this.model.__collection__.then(function(c) {
-        return q.ninvoke(c, 'count');
+        return q.ninvoke(c.find(_this.query, _this.opts), 'count');
       });
     });
 

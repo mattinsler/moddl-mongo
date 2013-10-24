@@ -38,7 +38,7 @@ class Model.Mongo.Query
 
   count: Model.defer ->
     @model.__collection__.then (c) =>
-      q.ninvoke(c, 'count')
+      q.ninvoke(c.find(@query, @opts), 'count')
 
   save: Model.defer (obj, opts) ->
     if typeof obj is 'function'
