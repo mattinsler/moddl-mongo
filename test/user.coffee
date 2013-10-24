@@ -1,9 +1,11 @@
-{Model} = require 'moddl'
-require '../lib/moddl-mongo'
+moddl = require 'moddl'
+require('../lib/moddl-mongodb')(moddl)
 
-Model.Mongo.connect('mongodb://localhost/awesomebox-api-new')
+{Model} = moddl
 
-class User extends Model.Mongo('users')
+Model.connect(mongodb: 'mongodb://localhost/awesomebox-api-new')
+
+class User extends Model.Mongodb('users')
 
 # $_ = (o) -> console.log if o.stack? then o.stack else o
 $_ = -> console.log arguments
@@ -17,6 +19,6 @@ $_ = -> console.log arguments
 # User.where(_id: 'test').update($set: {email: 'matt.insler@foo.com'})
 # .then($_).catch($_)
 
-# User.array($_)
+User.array().then($_)
 
-User.where(_id: 'mattinslers').count($_)
+# User.where(_id: 'mattinsler').count($_)
