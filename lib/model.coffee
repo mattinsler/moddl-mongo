@@ -1,6 +1,8 @@
+mongodb = require 'mongodb'
+
 module.exports = (moddl) ->
 	{q, Model} = moddl
-
+  
 	class Model.Mongodb extends Model
 	  constructor: ->
 	    return super(Model.Mongodb, arguments...)
@@ -48,3 +50,5 @@ module.exports = (moddl) ->
 	    @__collection__.then (c) =>
 	      q.ninvoke(c, 'findAndModify', query, sort, update, opts)
 	    .then(Model.wrapper(@))
+  
+  Model.Mongodb[t] = mongodb[t] for t in ['Long', 'ObjectID', 'Timestamp', 'DBRef', 'Binary', 'Code', 'Symbol', 'MinKey', 'MaxKey', 'Double']

@@ -1,12 +1,15 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var mongodb,
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
+  mongodb = require('mongodb');
+
   module.exports = function(moddl) {
-    var Model, q;
+    var Model, q, t, _i, _len, _ref, _results;
     q = moddl.q, Model = moddl.Model;
-    return Model.Mongodb = (function(_super) {
+    Model.Mongodb = (function(_super) {
       __extends(Mongodb, _super);
 
       function Mongodb() {
@@ -115,6 +118,13 @@
       return Mongodb;
 
     })(Model);
+    _ref = ['Long', 'ObjectID', 'Timestamp', 'DBRef', 'Binary', 'Code', 'Symbol', 'MinKey', 'MaxKey', 'Double'];
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      t = _ref[_i];
+      _results.push(Model.Mongodb[t] = mongodb[t]);
+    }
+    return _results;
   };
 
 }).call(this);
