@@ -43,4 +43,4 @@ module.exports = (moddl) ->
   
     d.promise
   
-  module.exports = Provider
+  Provider

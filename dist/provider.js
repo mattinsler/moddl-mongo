@@ -53,7 +53,7 @@
       });
       return d.promise;
     };
-    return module.exports = Provider;
+    return Provider;
   };
 
 }).call(this);
