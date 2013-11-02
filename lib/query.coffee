@@ -58,7 +58,6 @@ module.exports = (moddl) ->
 
       @model.__collection__.then (c) =>
         q.ninvoke(c, 'update', @query, update, opts)
-      .then(Model.wrapper(@model))
 
     remove: Model.defer (opts) ->
       opts ?= {}

@@ -99,7 +99,7 @@
         }
         return this.model.__collection__.then(function(c) {
           return q.ninvoke(c, 'update', _this.query, update, opts);
-        }).then(Model.wrapper(this.model));
+        });
       });
 
       Query.prototype.remove = Model.defer(function(opts) {
