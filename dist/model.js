@@ -46,11 +46,33 @@
         return _results;
       };
 
-      Mongodb.connect = function(url) {
-        return Model.Mongodb.provider.connect({
-          name: 'DEFAULT',
-          url: moddl.betturl.format(url)
-        });
+      Mongodb.connect = function(config) {
+        if (typeof config === 'string') {
+          config = {
+            "default": {
+              url: config
+            }
+          };
+        }
+        if (Object.keys(config).length === 1 && typeof config.url === 'string') {
+          config = {
+            "default": config
+          };
+        }
+        return q.all(Object.keys(config).map(function(name) {
+          if (typeof config[name] === 'string') {
+            config[name] = {
+              url: config[name]
+            };
+          }
+          if (config[name].url == null) {
+            return;
+          }
+          return Model.Mongodb.provider.connect({
+            name: name,
+            url: config[name].url
+          });
+        }));
       };
 
       Mongodb.where = function() {

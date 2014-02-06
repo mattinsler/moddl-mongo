@@ -28,6 +28,7 @@
       if (opts.name == null) {
         opts.name = opts.url;
       }
+      opts.name = opts.name.toLowerCase();
       if (Provider.cache.connected[opts.name] != null) {
         return q(Provider.cache.connected[opts.name]);
       }

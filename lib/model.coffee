@@ -14,7 +14,7 @@ module.exports = (moddl) ->
         @options.db = 'DEFAULT'
       else
         @options[k] = v for k, v of opts
-    
+      
       # throw new Error('Model.Mongodb must either have a `db` option or you must call Model.Mongodb.connect(db_url) first') unless @options.db?
       # throw new Error('Model.Mongodb requires a collection name') unless @options.collection?
       # 
@@ -25,9 +25,48 @@ module.exports = (moddl) ->
   
     @load: (instance, data) ->
       instance[k] = v for k, v of data
-  
-    @connect: (url) ->
-      Model.Mongodb.provider.connect(name: 'DEFAULT', url: moddl.betturl.format(url))
+    
+    # {
+    #   mongodb: 'mongodb://user:pass@foo:90001/bar'
+    # }
+    # 
+    # {
+    #   mongodb: {
+    #     url: 'mongodb://user:pass@foo:90001/bar'
+    #   }
+    # }
+    # 
+    # {
+    #   mongodb: {
+    #     default: 'mongodb://user:pass@foo:90001/bar',
+    #     foo: 'mongodb://user:pass@foo:90001/foo'
+    #   }
+    # }
+    # 
+    # {
+    #   mongodb: {
+    #     default: {
+    #       url: 'mongodb://user:pass@foo:90001/bar'
+    #     },
+    #     foo: {
+    #       url: 'mongodb://user:pass@foo:90001/foo'
+    #     }
+    #   }
+    # }
+    @connect: (config) ->
+      config = {default: {url: config}} if typeof config is 'string'
+      config = {default: config} if Object.keys(config).length is 1 and typeof config.url is 'string'
+      
+      q.all(
+        Object.keys(config).map (name) ->
+          config[name] = {url: config[name]} if typeof config[name] is 'string'
+          return unless config[name].url?
+          
+          Model.Mongodb.provider.connect(
+            name: name
+            url: config[name].url
+          )
+      )
   
     @where: -> new @Query(@).where(arguments...)
 

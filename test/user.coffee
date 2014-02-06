@@ -16,9 +16,9 @@ $_ = -> console.log arguments
 
 # User.where(email: 'test@test.com').remove().then($_, $_)
 
-# User.where(_id: 'test').update($set: {email: 'matt.insler@foo.com'})
-# .then($_).catch($_)
+User.where(_id: 'test').update({$set: {email: 'matt.insler@foo.com'}}, {w: 1})
+.then($_).catch($_)
 
-User.array().then($_)
+# User.array().then($_)
 
 # User.where(_id: 'mattinsler').count($_)

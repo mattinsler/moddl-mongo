@@ -8,9 +8,9 @@ module.exports = (moddl) ->
   Provider = new EventEmitter()
 
   Provider.cache =
-      connected: {}
-      connecting: {}
-
+    connected: {}
+    connecting: {}
+  
   Provider.get_database = (db_url) ->
     Provider.connect(name: db_url)
 
@@ -20,19 +20,20 @@ module.exports = (moddl) ->
   
   Provider.connect = (opts) ->
     opts.name ?= opts.url
+    opts.name = opts.name.toLowerCase()
   
     return q(Provider.cache.connected[opts.name]) if Provider.cache.connected[opts.name]?
     return Provider.cache.connecting[opts.name] if Provider.cache.connecting[opts.name]?
-  
+    
     d = q.defer()
-  
+    
     if opts.name? and not opts.url?
       Provider.on 'connect:' + opts.name, ->
         d.resolve(Provider.cache.connected[opts.name])
       return d.promise
-  
+    
     Provider.cache.connecting[opts.name] = d.promise
-  
+    
     MongoClient.connect opts.url, (err, db) ->
       delete Provider.cache.connecting[opts.name]
       return d.reject(err) if err?
