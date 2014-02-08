@@ -82,7 +82,13 @@ module.exports = (moddl) ->
     @save: (obj, opts, callback) -> @where().save(obj, opts, callback)
     @update: (query, update, opts, callback) -> @where(query).update(update, opts, callback)
     @remove: (query, opts, callback) -> @where(query).remove(opts, callback)
-
+    
+    @aggregate: Model.defer (array, opts) ->
+      opts ?= {}
+      
+      @__collection__.then (c) =>
+        q.ninvoke(c, 'aggregate', array, opts)
+    
     @find_and_modify: Model.defer (query, sort, update, opts) ->
       opts ?= {}
     

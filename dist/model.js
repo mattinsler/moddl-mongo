@@ -127,6 +127,16 @@
         return this.where(query).remove(opts, callback);
       };
 
+      Mongodb.aggregate = Model.defer(function(array, opts) {
+        var _this = this;
+        if (opts == null) {
+          opts = {};
+        }
+        return this.__collection__.then(function(c) {
+          return q.ninvoke(c, 'aggregate', array, opts);
+        });
+      });
+
       Mongodb.find_and_modify = Model.defer(function(query, sort, update, opts) {
         var _this = this;
         if (opts == null) {

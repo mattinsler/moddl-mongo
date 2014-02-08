@@ -1,7 +1,7 @@
 {
   "name": "moddl-mongodb",
   "description": "MongoDB models please!",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/mattinsler/moddl-mongodb",
   "author": {
     "name": "Matt Insler",
