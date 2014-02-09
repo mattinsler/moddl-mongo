@@ -82,6 +82,7 @@ module.exports = (moddl) ->
     @save: (obj, opts, callback) -> @where().save(obj, opts, callback)
     @update: (query, update, opts, callback) -> @where(query).update(update, opts, callback)
     @remove: (query, opts, callback) -> @where(query).remove(opts, callback)
+    @distinct: (key, opts, callback) -> @where().distinct(key, opts, callback)
     
     @aggregate: Model.defer (array, opts) ->
       opts ?= {}

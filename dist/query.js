@@ -112,6 +112,16 @@
         });
       });
 
+      Query.prototype.distinct = Model.defer(function(key, opts) {
+        var _this = this;
+        if (opts == null) {
+          opts = {};
+        }
+        return this.model.__collection__.then(function(c) {
+          return q.ninvoke(c, 'distinct', key, _this.query, opts);
+        });
+      });
+
       return Query;
 
     })();

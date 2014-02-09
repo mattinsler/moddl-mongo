@@ -127,6 +127,10 @@
         return this.where(query).remove(opts, callback);
       };
 
+      Mongodb.distinct = function(key, opts, callback) {
+        return this.where().distinct(key, opts, callback);
+      };
+
       Mongodb.aggregate = Model.defer(function(array, opts) {
         var _this = this;
         if (opts == null) {

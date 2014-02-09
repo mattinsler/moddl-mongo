@@ -64,3 +64,9 @@ module.exports = (moddl) ->
     
       @model.__collection__.then (c) =>
         q.ninvoke(c, 'remove', @query, opts)
+    
+    distinct: Model.defer (key, opts) ->
+      opts ?= {}
+      
+      @model.__collection__.then (c) =>
+        q.ninvoke(c, 'distinct', key, @query, opts)
